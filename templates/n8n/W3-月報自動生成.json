@@ -1,0 +1,264 @@
+{
+  "name": "W3-月報自動生成",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9,
+              "triggerAtMinute": 0,
+              "triggerAtDay": 1
+            }
+          ]
+        }
+      },
+      "id": "w3-node-01",
+      "name": "每月 1 日 09:00 觸發",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [200, 400]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": { "__rl": true, "value": "YOUR_SPREADSHEET_ID", "mode": "id" },
+        "sheetName": "月報"
+      },
+      "id": "w3-node-02",
+      "name": "讀取月報數據",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [440, 400],
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "GOOGLE_SHEETS_CREDENTIAL_ID", "name": "Google Sheets OAuth" }
+      }
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "raw_data", "value": "={{JSON.stringify($json)}}" },
+            { "name": "month", "value": "={{$now.minus({months: 1}).format('YYYY年MM月')}}" }
+          ]
+        }
+      },
+      "id": "w3-node-03",
+      "name": "整理數據",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [680, 400]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的房仲業績分析師。請根據以下月報數據，產出【專業版月報】（給店長/主管看的完整分析報告）。\n\n月份：{{$json.month}}\n數據：{{$json.raw_data}}\n\n報告要求：\n- 500 字內\n- 包含：本月摘要、業績分析、成交趨勢、客戶來源分析、下月建議\n- 用數據說話，搭配百分比和比較\n- 語氣專業嚴謹\n\n直接輸出報告內容。"
+            }
+          ]
+        }
+      },
+      "id": "w3-node-04",
+      "name": "AI 產出專業版月報",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [960, 160],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的房仲業績分析師。請根據以下月報數據，產出【簡潔版月報】（給業務同仁快速掌握重點）。\n\n月份：{{$json.month}}\n數據：{{$json.raw_data}}\n\n報告要求：\n- 200 字內\n- 用 bullet points 列出關鍵數字\n- 3 個亮點 + 2 個待改善\n- 語氣直接明快\n\n直接輸出報告內容。"
+            }
+          ]
+        }
+      },
+      "id": "w3-node-05",
+      "name": "AI 產出簡潔版月報",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [960, 360],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的房仲社群行銷專家。請根據以下月報數據，產出【社群版月報】（適合發在 FB/IG 展現專業的貼文）。\n\n月份：{{$json.month}}\n數據：{{$json.raw_data}}\n\n貼文要求：\n- 150 字內\n- 分享市場洞察（不露出具體業績數字）\n- 展現專業度和市場敏銳度\n- 含 3-5 個 hashtag\n- 語氣親切專業\n\n直接輸出貼文內容。"
+            }
+          ]
+        }
+      },
+      "id": "w3-node-06",
+      "name": "AI 產出社群版月報",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [960, 560],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的房仲客戶關係經營專家。請根據以下月報數據，產出【客戶版月報】（發給 VIP 客戶的市場快報）。\n\n月份：{{$json.month}}\n數據：{{$json.raw_data}}\n\n月報要求：\n- 200 字內\n- 聚焦市場趨勢和投資機會\n- 不露出公司內部數據\n- 結尾留下諮詢引導\n- 語氣誠懇專業\n\n直接輸出月報內容。"
+            }
+          ]
+        }
+      },
+      "id": "w3-node-07",
+      "name": "AI 產出客戶版月報",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [960, 760],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "numberInputs": 4
+      },
+      "id": "w3-node-08",
+      "name": "合併四版本",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [1260, 400]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": { "__rl": true, "value": "YOUR_SPREADSHEET_ID", "mode": "id" },
+        "sheetName": "月報產出",
+        "columns": {
+          "mappingMode": "autoMapInputData"
+        }
+      },
+      "id": "w3-node-09",
+      "name": "存入 Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1500, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "GOOGLE_SHEETS_CREDENTIAL_ID", "name": "Google Sheets OAuth" }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://notify-api.line.me/api/notify",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer YOUR_LINE_NOTIFY_TOKEN" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "\n📊 {{$json.month}} 月報已自動產出！\n✅ 專業版（店長用）\n✅ 簡潔版（業務用）\n✅ 社群版（FB/IG 用）\n✅ 客戶版（VIP 客戶用）\n\n請到 Google Sheets 查看完整內容。"
+            }
+          ]
+        },
+        "contentType": "multipart-form-data"
+      },
+      "id": "w3-node-10",
+      "name": "LINE Notify 通知",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1500, 500]
+    },
+    {
+      "parameters": {
+        "content": "## W3 月報自動生成\n\n**觸發**：每月 1 日 09:00\n**流程**：讀取數據 → 4 路 AI 產出（專業/簡潔/社群/客戶版）→ 存 Sheets → 通知\n\n### Google Sheets 欄位\n- 成交件數, 成交金額, 帶看次數\n- 新客戶數, 廣告花費, 客戶來源"
+      },
+      "id": "w3-node-11",
+      "name": "流程說明",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [80, 80]
+    }
+  ],
+  "connections": {
+    "每月 1 日 09:00 觸發": {
+      "main": [
+        [{ "node": "讀取月報數據", "type": "main", "index": 0 }]
+      ]
+    },
+    "讀取月報數據": {
+      "main": [
+        [{ "node": "整理數據", "type": "main", "index": 0 }]
+      ]
+    },
+    "整理數據": {
+      "main": [
+        [
+          { "node": "AI 產出專業版月報", "type": "main", "index": 0 },
+          { "node": "AI 產出簡潔版月報", "type": "main", "index": 0 },
+          { "node": "AI 產出社群版月報", "type": "main", "index": 0 },
+          { "node": "AI 產出客戶版月報", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "AI 產出專業版月報": {
+      "main": [
+        [{ "node": "合併四版本", "type": "main", "index": 0 }]
+      ]
+    },
+    "AI 產出簡潔版月報": {
+      "main": [
+        [{ "node": "合併四版本", "type": "main", "index": 1 }]
+      ]
+    },
+    "AI 產出社群版月報": {
+      "main": [
+        [{ "node": "合併四版本", "type": "main", "index": 2 }]
+      ]
+    },
+    "AI 產出客戶版月報": {
+      "main": [
+        [{ "node": "合併四版本", "type": "main", "index": 3 }]
+      ]
+    },
+    "合併四版本": {
+      "main": [
+        [
+          { "node": "存入 Google Sheets", "type": "main", "index": 0 },
+          { "node": "LINE Notify 通知", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "timezone": "Asia/Taipei"
+  },
+  "tags": [
+    { "name": "房仲AI" },
+    { "name": "月報" }
+  ]
+}

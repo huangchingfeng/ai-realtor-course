@@ -1,0 +1,258 @@
+{
+  "name": "W2-帶看跟進提醒",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      },
+      "id": "w2-node-01",
+      "name": "每天 08:00 觸發",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [200, 400]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": { "__rl": true, "value": "YOUR_SPREADSHEET_ID", "mode": "id" },
+        "sheetName": "帶看紀錄"
+      },
+      "id": "w2-node-02",
+      "name": "讀取客戶帶看紀錄",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [440, 400],
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "GOOGLE_SHEETS_CREDENTIAL_ID", "name": "Google Sheets OAuth" }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [],
+          "number": [],
+          "dateTime": []
+        },
+        "jsCode": "const today = new Date();\nconst viewDate = new Date($json.view_date);\nconst diffDays = Math.floor((today - viewDate) / (1000 * 60 * 60 * 24));\nreturn diffDays === 3 || diffDays === 7 || diffDays === 14;"
+      },
+      "id": "w2-node-03",
+      "name": "篩選今日到期客戶",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [680, 400]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "client_name", "value": "={{$json.client_name}}" },
+            { "name": "phone", "value": "={{$json.phone}}" },
+            { "name": "property_name", "value": "={{$json.property_name}}" },
+            { "name": "view_date", "value": "={{$json.view_date}}" },
+            { "name": "feedback", "value": "={{$json.feedback}}" },
+            { "name": "agent_name", "value": "={{$json.agent_name}}" }
+          ],
+          "number": [
+            { "name": "days_passed", "value": "={{Math.floor((new Date() - new Date($json.view_date)) / (1000 * 60 * 60 * 24))}}" }
+          ]
+        }
+      },
+      "id": "w2-node-04",
+      "name": "計算天數與整理",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [920, 400]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            { "value1": "={{$json.days_passed}}", "value2": 3 }
+          ]
+        }
+      },
+      "id": "w2-node-05",
+      "name": "Day3 跟進",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1160, 260]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的房仲客戶跟進顧問。客戶在 3 天前看過房子，請產出一則溫暖的跟進訊息。\n\n客戶姓名：{{$json.client_name}}\n看的物件：{{$json.property_name}}\n當時回饋：{{$json.feedback}}\n經紀人：{{$json.agent_name}}\n\n訊息要求：\n- 100 字內\n- 語氣溫暖但不壓迫\n- 提問了解需求變化\n- 結尾留轉圜空間\n\n直接輸出訊息內容。"
+            }
+          ]
+        }
+      },
+      "id": "w2-node-06",
+      "name": "AI 產出 Day3 訊息",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [1400, 160],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的房仲客戶跟進顧問。客戶在 7 天前看過房子，請產出一則提供價值的跟進訊息。\n\n客戶姓名：{{$json.client_name}}\n看的物件：{{$json.property_name}}\n當時回饋：{{$json.feedback}}\n經紀人：{{$json.agent_name}}\n\n訊息要求：\n- 120 字內\n- 提供該區域最新行情或類似物件資訊\n- 語氣專業且關心\n- 不施壓\n\n直接輸出訊息內容。"
+            }
+          ]
+        }
+      },
+      "id": "w2-node-07",
+      "name": "AI 產出 Day7 訊息",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [1400, 400],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的房仲客戶跟進顧問。客戶在 14 天前看過房子，這是最後一次主動跟進，請產出一則保持聯繫的訊息。\n\n客戶姓名：{{$json.client_name}}\n看的物件：{{$json.property_name}}\n當時回饋：{{$json.feedback}}\n經紀人：{{$json.agent_name}}\n\n訊息要求：\n- 100 字內\n- 不施壓，但表達隨時服務的誠意\n- 留下未來重啟對話的鉤子\n\n直接輸出訊息內容。"
+            }
+          ]
+        }
+      },
+      "id": "w2-node-08",
+      "name": "AI 產出 Day14 訊息",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [1400, 620],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "numberInputs": 3
+      },
+      "id": "w2-node-09",
+      "name": "合併跟進訊息",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [1660, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://notify-api.line.me/api/notify",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer YOUR_LINE_NOTIFY_TOKEN" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "\n📋 帶看跟進提醒\n客戶：{{$json.client_name}}\n物件：{{$json.property_name}}\n帶看日：{{$json.view_date}}\n天數：Day {{$json.days_passed}}\n\n💬 建議訊息：\n{{$json.message.content}}"
+            }
+          ]
+        },
+        "contentType": "multipart-form-data"
+      },
+      "id": "w2-node-10",
+      "name": "LINE Notify 提醒房仲",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1900, 400]
+    },
+    {
+      "parameters": {
+        "content": "## W2 帶看跟進提醒\n\n**觸發**：每天 08:00\n**流程**：讀取帶看紀錄 → 篩選 Day3/7/14 → AI 產出跟進訊息 → LINE 通知\n\n### Google Sheets 欄位\n- client_name, phone, property_name\n- view_date, feedback, agent_name"
+      },
+      "id": "w2-node-11",
+      "name": "流程說明",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [80, 80]
+    }
+  ],
+  "connections": {
+    "每天 08:00 觸發": {
+      "main": [
+        [{ "node": "讀取客戶帶看紀錄", "type": "main", "index": 0 }]
+      ]
+    },
+    "讀取客戶帶看紀錄": {
+      "main": [
+        [{ "node": "篩選今日到期客戶", "type": "main", "index": 0 }]
+      ]
+    },
+    "篩選今日到期客戶": {
+      "main": [
+        [{ "node": "計算天數與整理", "type": "main", "index": 0 }]
+      ]
+    },
+    "計算天數與整理": {
+      "main": [
+        [{ "node": "Day3 跟進", "type": "main", "index": 0 }]
+      ]
+    },
+    "Day3 跟進": {
+      "main": [
+        [{ "node": "AI 產出 Day3 訊息", "type": "main", "index": 0 }],
+        [{ "node": "AI 產出 Day7 訊息", "type": "main", "index": 0 }]
+      ]
+    },
+    "AI 產出 Day3 訊息": {
+      "main": [
+        [{ "node": "合併跟進訊息", "type": "main", "index": 0 }]
+      ]
+    },
+    "AI 產出 Day7 訊息": {
+      "main": [
+        [{ "node": "合併跟進訊息", "type": "main", "index": 1 }]
+      ]
+    },
+    "AI 產出 Day14 訊息": {
+      "main": [
+        [{ "node": "合併跟進訊息", "type": "main", "index": 2 }]
+      ]
+    },
+    "合併跟進訊息": {
+      "main": [
+        [{ "node": "LINE Notify 提醒房仲", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "timezone": "Asia/Taipei"
+  },
+  "tags": [
+    { "name": "房仲AI" },
+    { "name": "客戶跟進" }
+  ]
+}

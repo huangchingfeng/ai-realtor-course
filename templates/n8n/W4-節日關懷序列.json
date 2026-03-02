@@ -1,0 +1,236 @@
+{
+  "name": "W4-節日關懷序列",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 7,
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      },
+      "id": "w4-node-01",
+      "name": "每天 07:30 觸發",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [200, 400]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "today", "value": "={{$now.format('MM-DD')}}" },
+            { "name": "today_full", "value": "={{$now.format('YYYY-MM-DD')}}" }
+          ]
+        }
+      },
+      "id": "w4-node-02",
+      "name": "取得今日日期",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [440, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "const holidays = {\n  '01-01': '元旦',\n  '02-14': '情人節',\n  '03-08': '婦女節',\n  '04-04': '兒童節',\n  '05-01': '勞動節',\n  '06-01': '端午節前後',\n  '08-08': '父親節',\n  '09-01': '中秋節前後',\n  '10-10': '國慶日',\n  '10-31': '萬聖節',\n  '11-01': '感恩節前後',\n  '12-24': '平安夜',\n  '12-25': '聖誕節',\n  '12-31': '跨年'\n};\n\nconst today = $input.first().json.today;\nconst holidayName = holidays[today] || null;\n\nreturn [{ json: { ...($input.first().json), is_holiday: !!holidayName, holiday_name: holidayName || '' } }];"
+      },
+      "id": "w4-node-03",
+      "name": "檢查是否為節日",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 400]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": { "__rl": true, "value": "YOUR_SPREADSHEET_ID", "mode": "id" },
+        "sheetName": "客戶資料"
+      },
+      "id": "w4-node-04",
+      "name": "讀取客戶名單",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [920, 400],
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "GOOGLE_SHEETS_CREDENTIAL_ID", "name": "Google Sheets OAuth" }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": []
+        },
+        "jsCode": "const today = $('取得今日日期').first().json.today;\nconst isHoliday = $('檢查是否為節日').first().json.is_holiday;\nconst birthday = $json.birthday ? $json.birthday.substring(5) : '';\nreturn isHoliday || birthday === today;"
+      },
+      "id": "w4-node-05",
+      "name": "篩選需關懷客戶",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 1,
+      "position": [1160, 400]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "client_name", "value": "={{$json.client_name}}" },
+            { "name": "client_type", "value": "={{$json.client_type}}" },
+            { "name": "birthday", "value": "={{$json.birthday}}" },
+            { "name": "holiday_name", "value": "={{$node['檢查是否為節日'].json.holiday_name}}" },
+            { "name": "is_birthday", "value": "={{$json.birthday ? $json.birthday.substring(5) === $node['取得今日日期'].json.today ? 'true' : 'false' : 'false'}}" }
+          ]
+        }
+      },
+      "id": "w4-node-06",
+      "name": "整理關懷資料",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [1400, 400]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的房仲客戶關係經營專家。請根據以下資訊，產出一則溫暖的關懷訊息。\n\n客戶姓名：{{$json.client_name}}\n客戶類型：{{$json.client_type}}\n是否生日：{{$json.is_birthday}}\n節日名稱：{{$json.holiday_name}}\n\n訊息規則：\n- 如果是生日，以生日祝福為主\n- 如果是節日，以節日問候為主\n- 如果兩者都是，先祝生日再提節日\n- 80 字內\n- 語氣真誠溫暖，不要太商業\n- 結尾可以帶一句輕鬆的房市話題\n- 根據客戶類型調整用語：\n  - 潛在客戶：較輕鬆\n  - 成交客戶：較親切熟悉\n  - VIP客戶：較尊重禮遇\n\n直接輸出訊息內容。"
+            }
+          ]
+        }
+      },
+      "id": "w4-node-07",
+      "name": "AI 產出關懷訊息",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [1640, 260],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": { "__rl": true, "value": "YOUR_SPREADSHEET_ID", "mode": "id" },
+        "sheetName": "關懷紀錄",
+        "columns": {
+          "mappingMode": "autoMapInputData"
+        }
+      },
+      "id": "w4-node-08",
+      "name": "存入關懷紀錄",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1880, 160],
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "GOOGLE_SHEETS_CREDENTIAL_ID", "name": "Google Sheets OAuth" }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://notify-api.line.me/api/notify",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer YOUR_LINE_NOTIFY_TOKEN" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "\n🎉 今日關懷提醒\n客戶：{{$json.client_name}}（{{$json.client_type}}）\n{{$json.is_birthday === 'true' ? '🎂 今天生日！' : ''}}\n{{$json.holiday_name ? '🎊 ' + $json.holiday_name : ''}}\n\n💬 建議訊息：\n{{$json.message.content}}"
+            }
+          ]
+        },
+        "contentType": "multipart-form-data"
+      },
+      "id": "w4-node-09",
+      "name": "LINE Notify 提醒",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1880, 400]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$node['篩選需關懷客戶'].json !== undefined}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "w4-node-10",
+      "name": "有客戶需關懷？",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1160, 600]
+    },
+    {
+      "parameters": {
+        "content": "## W4 節日關懷序列\n\n**觸發**：每天 07:30\n**流程**：檢查節日/生日 → 讀取客戶 → 篩選 → AI 產出訊息 → LINE 通知\n\n### 支援節日\n元旦、情人節、婦女節、兒童節、勞動節、端午、父親節、中秋、國慶、萬聖、感恩、聖誕、跨年\n\n### Google Sheets 欄位\nclient_name, client_type, birthday, phone"
+      },
+      "id": "w4-node-11",
+      "name": "流程說明",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [80, 80]
+    }
+  ],
+  "connections": {
+    "每天 07:30 觸發": {
+      "main": [
+        [{ "node": "取得今日日期", "type": "main", "index": 0 }]
+      ]
+    },
+    "取得今日日期": {
+      "main": [
+        [{ "node": "檢查是否為節日", "type": "main", "index": 0 }]
+      ]
+    },
+    "檢查是否為節日": {
+      "main": [
+        [{ "node": "讀取客戶名單", "type": "main", "index": 0 }]
+      ]
+    },
+    "讀取客戶名單": {
+      "main": [
+        [{ "node": "篩選需關懷客戶", "type": "main", "index": 0 }]
+      ]
+    },
+    "篩選需關懷客戶": {
+      "main": [
+        [{ "node": "整理關懷資料", "type": "main", "index": 0 }]
+      ]
+    },
+    "整理關懷資料": {
+      "main": [
+        [{ "node": "AI 產出關懷訊息", "type": "main", "index": 0 }]
+      ]
+    },
+    "AI 產出關懷訊息": {
+      "main": [
+        [
+          { "node": "存入關懷紀錄", "type": "main", "index": 0 },
+          { "node": "LINE Notify 提醒", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "timezone": "Asia/Taipei"
+  },
+  "tags": [
+    { "name": "房仲AI" },
+    { "name": "客戶關懷" }
+  ]
+}

@@ -1,0 +1,310 @@
+{
+  "name": "W5-社群內容批量",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 10,
+              "triggerAtMinute": 0,
+              "triggerAtDay": 1
+            }
+          ]
+        }
+      },
+      "id": "w5-node-01",
+      "name": "每月 1 日 10:00 觸發",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [200, 400]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": { "__rl": true, "value": "YOUR_SPREADSHEET_ID", "mode": "id" },
+        "sheetName": "物件素材庫"
+      },
+      "id": "w5-node-02",
+      "name": "讀取物件素材庫",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [440, 400],
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "GOOGLE_SHEETS_CREDENTIAL_ID", "name": "Google Sheets OAuth" }
+      }
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "month", "value": "={{$now.format('YYYY年MM月')}}" },
+            { "name": "properties_data", "value": "={{JSON.stringify($json)}}" },
+            { "name": "agent_name", "value": "={{$json.agent_name || '房仲小幫手'}}" },
+            { "name": "area", "value": "={{$json.area || '台北'}}" }
+          ]
+        }
+      },
+      "id": "w5-node-03",
+      "name": "整理素材資料",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [680, 400]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的房仲 LINE 社群經營專家。請產出本月 13 則【LINE 早安貼文】（每週一三五各一則，涵蓋整個月）。\n\n月份：{{$json.month}}\n經紀人：{{$json.agent_name}}\n服務區域：{{$json.area}}\n\n貼文要求：\n- 每則 50-80 字\n- 早安問候 + 房市小知識或生活智慧\n- 語氣溫暖正能量\n- 偶爾穿插物件推薦（不超過 3 則）\n- 每則結尾附 1 個 emoji\n\n請以 JSON 陣列格式回覆：[{\"day\": \"W1-Mon\", \"content\": \"...\"}, ...]"
+            }
+          ]
+        }
+      },
+      "id": "w5-node-04",
+      "name": "AI 批量 LINE 早安",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [960, 120],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的房仲 Facebook 社群經營專家。請產出本月 13 則【FB 心得貼文】（每週二四六各一則，涵蓋整個月）。\n\n月份：{{$json.month}}\n經紀人：{{$json.agent_name}}\n服務區域：{{$json.area}}\n物件素材：{{$json.properties_data}}\n\n貼文要求：\n- 每則 100-150 字\n- 主題輪替：成交心得(3)、看屋Tips(3)、區域介紹(3)、客戶故事(2)、自我成長(2)\n- 每則含 3-5 個 hashtag\n- 語氣真誠有故事感\n\n請以 JSON 陣列格式回覆：[{\"day\": \"W1-Tue\", \"topic\": \"...\", \"content\": \"...\"}, ...]"
+            }
+          ]
+        }
+      },
+      "id": "w5-node-05",
+      "name": "AI 批量 FB 心得",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [960, 340],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的房仲 Instagram 品牌經營專家。請產出本月 13 則【IG 品牌貼文】（每週一三五各一則，涵蓋整個月）。\n\n月份：{{$json.month}}\n經紀人：{{$json.agent_name}}\n服務區域：{{$json.area}}\n\n貼文要求：\n- 每則 caption 80-120 字\n- 主題輪替：專業形象(3)、生活日常(3)、房市知識(3)、客戶好評(2)、幕後花絮(2)\n- 每則含 8-10 個 hashtag\n- 語氣年輕有質感\n- 附圖片建議（描述應拍什麼照片）\n\n請以 JSON 陣列格式回覆：[{\"day\": \"W1-Mon\", \"topic\": \"...\", \"caption\": \"...\", \"photo_suggestion\": \"...\"}, ...]"
+            }
+          ]
+        }
+      },
+      "id": "w5-node-06",
+      "name": "AI 批量 IG 品牌",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [960, 560],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的房仲 Threads 社群經營專家。請產出本月 13 則【Threads 冷知識貼文】（每週二四六各一則，涵蓋整個月）。\n\n月份：{{$json.month}}\n經紀人：{{$json.agent_name}}\n服務區域：{{$json.area}}\n\n貼文要求：\n- 每則 50-80 字（Threads 短文風格）\n- 主題：房地產冷知識、買房避坑、租屋須知、法律小常識、裝潢Tips\n- 語氣像朋友聊天，輕鬆有趣\n- 每則結尾拋問題引發互動\n\n請以 JSON 陣列格式回覆：[{\"day\": \"W1-Tue\", \"topic\": \"...\", \"content\": \"...\"}, ...]"
+            }
+          ]
+        }
+      },
+      "id": "w5-node-07",
+      "name": "AI 批量 Threads 冷知識",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [960, 780],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "numberInputs": 4
+      },
+      "id": "w5-node-08",
+      "name": "合併四路產出",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [1260, 400]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "month", "value": "={{$node['整理素材資料'].json.month}}" },
+            { "name": "line_posts", "value": "={{$node['AI 批量 LINE 早安'].json.message.content}}" },
+            { "name": "fb_posts", "value": "={{$node['AI 批量 FB 心得'].json.message.content}}" },
+            { "name": "ig_posts", "value": "={{$node['AI 批量 IG 品牌'].json.message.content}}" },
+            { "name": "threads_posts", "value": "={{$node['AI 批量 Threads 冷知識'].json.message.content}}" },
+            { "name": "created_at", "value": "={{$now.toISO()}}" }
+          ]
+        }
+      },
+      "id": "w5-node-09",
+      "name": "整理輸出格式",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [1500, 400]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": { "__rl": true, "value": "YOUR_SPREADSHEET_ID", "mode": "id" },
+        "sheetName": "內容排程",
+        "columns": {
+          "mappingMode": "autoMapInputData"
+        }
+      },
+      "id": "w5-node-10",
+      "name": "存入排程表",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1740, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "GOOGLE_SHEETS_CREDENTIAL_ID", "name": "Google Sheets OAuth" }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://notify-api.line.me/api/notify",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer YOUR_LINE_NOTIFY_TOKEN" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "\n📱 {{$json.month}} 社群內容已批量產出！\n✅ LINE 早安 × 13 則\n✅ FB 心得 × 13 則\n✅ IG 品牌 × 13 則\n✅ Threads 冷知識 × 13 則\n\n共 52 則內容，已存入排程表！"
+            }
+          ]
+        },
+        "contentType": "multipart-form-data"
+      },
+      "id": "w5-node-11",
+      "name": "LINE Notify 通知",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1740, 500]
+    },
+    {
+      "parameters": {
+        "content": "## W5 社群內容批量\n\n**觸發**：每月 1 日 10:00\n**流程**：讀取素材 → 4 路 AI 批量（LINE/FB/IG/Threads）→ 存入排程表 → 通知\n\n### 每月產出量\n- LINE 早安 × 13\n- FB 心得 × 13\n- IG 品牌 × 13\n- Threads 冷知識 × 13\n- **合計 52 則**"
+      },
+      "id": "w5-node-12",
+      "name": "流程說明",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [80, 80]
+    },
+    {
+      "parameters": {
+        "content": "### 4 路 AI 並行批量\n每路產出 13 則（一週一三五或二四六）\n覆蓋一整個月的排程"
+      },
+      "id": "w5-node-13",
+      "name": "批量說明",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [860, 40]
+    },
+    {
+      "parameters": {
+        "content": "### 注意\n每月 52 則約消耗 OpenAI\n~$0.50 USD（gpt-4o-mini）"
+      },
+      "id": "w5-node-14",
+      "name": "費用說明",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [1500, 80]
+    }
+  ],
+  "connections": {
+    "每月 1 日 10:00 觸發": {
+      "main": [
+        [{ "node": "讀取物件素材庫", "type": "main", "index": 0 }]
+      ]
+    },
+    "讀取物件素材庫": {
+      "main": [
+        [{ "node": "整理素材資料", "type": "main", "index": 0 }]
+      ]
+    },
+    "整理素材資料": {
+      "main": [
+        [
+          { "node": "AI 批量 LINE 早安", "type": "main", "index": 0 },
+          { "node": "AI 批量 FB 心得", "type": "main", "index": 0 },
+          { "node": "AI 批量 IG 品牌", "type": "main", "index": 0 },
+          { "node": "AI 批量 Threads 冷知識", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "AI 批量 LINE 早安": {
+      "main": [
+        [{ "node": "合併四路產出", "type": "main", "index": 0 }]
+      ]
+    },
+    "AI 批量 FB 心得": {
+      "main": [
+        [{ "node": "合併四路產出", "type": "main", "index": 1 }]
+      ]
+    },
+    "AI 批量 IG 品牌": {
+      "main": [
+        [{ "node": "合併四路產出", "type": "main", "index": 2 }]
+      ]
+    },
+    "AI 批量 Threads 冷知識": {
+      "main": [
+        [{ "node": "合併四路產出", "type": "main", "index": 3 }]
+      ]
+    },
+    "合併四路產出": {
+      "main": [
+        [{ "node": "整理輸出格式", "type": "main", "index": 0 }]
+      ]
+    },
+    "整理輸出格式": {
+      "main": [
+        [
+          { "node": "存入排程表", "type": "main", "index": 0 },
+          { "node": "LINE Notify 通知", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "timezone": "Asia/Taipei"
+  },
+  "tags": [
+    { "name": "房仲AI" },
+    { "name": "社群內容" }
+  ]
+}

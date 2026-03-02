@@ -1,0 +1,355 @@
+{
+  "name": "W1-物件行銷自動產出",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "property-marketing",
+        "responseMode": "lastNode"
+      },
+      "id": "w1-node-01",
+      "name": "Webhook 接收物件資料",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [200, 400]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "property_name", "value": "={{$json.body.property_name}}" },
+            { "name": "address", "value": "={{$json.body.address}}" },
+            { "name": "price", "value": "={{$json.body.price}}" },
+            { "name": "size", "value": "={{$json.body.size}}" },
+            { "name": "rooms", "value": "={{$json.body.rooms}}" },
+            { "name": "features", "value": "={{$json.body.features}}" },
+            { "name": "agent_name", "value": "={{$json.body.agent_name}}" }
+          ]
+        }
+      },
+      "id": "w1-node-02",
+      "name": "整理物件資料",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [440, 400]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的房仲 591 文案撰寫專家。請根據以下物件資料，產出吸睛的 591 標題（20字內）和詳細描述（300字內）。\n\n物件名稱：{{$json.property_name}}\n地址：{{$json.address}}\n價格：{{$json.price}}\n坪數：{{$json.size}}\n格局：{{$json.rooms}}\n特色：{{$json.features}}\n\n請以 JSON 格式回覆：{\"title\": \"...\", \"description\": \"...\"}"
+            }
+          ]
+        }
+      },
+      "id": "w1-node-03",
+      "name": "AI 產出 591 標題描述",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [720, 100],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的房仲 LINE 行銷專家。請根據以下物件資料，產出 LINE 圖卡文案（主標題 15 字內 + 副標題 30 字內 + CTA 按鈕文字 8 字內）。\n\n物件名稱：{{$json.property_name}}\n價格：{{$json.price}}\n坪數：{{$json.size}}\n格局：{{$json.rooms}}\n特色：{{$json.features}}\n\n請以 JSON 格式回覆：{\"main_title\": \"...\", \"subtitle\": \"...\", \"cta\": \"...\"}"
+            }
+          ]
+        }
+      },
+      "id": "w1-node-04",
+      "name": "AI 產出 LINE 圖卡",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [720, 260],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的房仲社群行銷專家。請根據以下物件資料，產出 Facebook 貼文（200字內，含 3-5 個 hashtag，語氣親切專業）。\n\n物件名稱：{{$json.property_name}}\n地址：{{$json.address}}\n價格：{{$json.price}}\n坪數：{{$json.size}}\n格局：{{$json.rooms}}\n特色：{{$json.features}}\n經紀人：{{$json.agent_name}}\n\n直接輸出貼文內容。"
+            }
+          ]
+        }
+      },
+      "id": "w1-node-05",
+      "name": "AI 產出 FB 貼文",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [720, 420],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的 Instagram 房地產行銷專家。請根據以下物件資料，產出 IG 輪播貼文（5 張 slide 的文案，每張 50 字內 + 整體 caption 150 字內含 10 個 hashtag）。\n\n物件名稱：{{$json.property_name}}\n地址：{{$json.address}}\n價格：{{$json.price}}\n坪數：{{$json.size}}\n格局：{{$json.rooms}}\n特色：{{$json.features}}\n\n請以 JSON 格式回覆：{\"slides\": [\"...\", \"...\", \"...\", \"...\", \"...\"], \"caption\": \"...\"}"
+            }
+          ]
+        }
+      },
+      "id": "w1-node-06",
+      "name": "AI 產出 IG 輪播",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [720, 580],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的 Google 商家行銷專家。請根據以下物件資料，產出 Google 商家貼文（150 字內，含 CTA 按鈕建議）。\n\n物件名稱：{{$json.property_name}}\n地址：{{$json.address}}\n價格：{{$json.price}}\n坪數：{{$json.size}}\n格局：{{$json.rooms}}\n特色：{{$json.features}}\n經紀人：{{$json.agent_name}}\n\n請以 JSON 格式回覆：{\"post_content\": \"...\", \"cta_type\": \"...\", \"cta_text\": \"...\"}"
+            }
+          ]
+        }
+      },
+      "id": "w1-node-07",
+      "name": "AI 產出 Google 商家",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [720, 740],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "content": "你是專業的房仲簡訊行銷專家。請根據以下物件資料，產出客戶推薦簡訊（70 字內，精準有力）。\n\n物件名稱：{{$json.property_name}}\n價格：{{$json.price}}\n坪數：{{$json.size}}\n格局：{{$json.rooms}}\n特色：{{$json.features}}\n經紀人：{{$json.agent_name}}\n\n直接輸出簡訊內容。"
+            }
+          ]
+        }
+      },
+      "id": "w1-node-08",
+      "name": "AI 產出推薦簡訊",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [720, 900],
+      "credentials": {
+        "openAiApi": { "id": "OPENAI_CREDENTIAL_ID", "name": "OpenAI API" }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "numberInputs": 6
+      },
+      "id": "w1-node-09",
+      "name": "合併所有產出",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [1020, 420]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            { "name": "property_name", "value": "={{$node['整理物件資料'].json.property_name}}" },
+            { "name": "result_591", "value": "={{$node['AI 產出 591 標題描述'].json.message.content}}" },
+            { "name": "result_line", "value": "={{$node['AI 產出 LINE 圖卡'].json.message.content}}" },
+            { "name": "result_fb", "value": "={{$node['AI 產出 FB 貼文'].json.message.content}}" },
+            { "name": "result_ig", "value": "={{$node['AI 產出 IG 輪播'].json.message.content}}" },
+            { "name": "result_google", "value": "={{$node['AI 產出 Google 商家'].json.message.content}}" },
+            { "name": "result_sms", "value": "={{$node['AI 產出推薦簡訊'].json.message.content}}" },
+            { "name": "created_at", "value": "={{$now.toISO()}}" }
+          ]
+        }
+      },
+      "id": "w1-node-10",
+      "name": "整理輸出格式",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [1260, 420]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": { "__rl": true, "value": "YOUR_SPREADSHEET_ID", "mode": "id" },
+        "sheetName": "物件清單",
+        "columns": {
+          "mappingMode": "autoMapInputData"
+        }
+      },
+      "id": "w1-node-11",
+      "name": "存入 Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1500, 320],
+      "credentials": {
+        "googleSheetsOAuth2Api": { "id": "GOOGLE_SHEETS_CREDENTIAL_ID", "name": "Google Sheets OAuth" }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://notify-api.line.me/api/notify",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer YOUR_LINE_NOTIFY_TOKEN" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "\n🏠 物件行銷素材已產出！\n物件：{{$node['整理物件資料'].json.property_name}}\n✅ 591 標題描述\n✅ LINE 圖卡\n✅ FB 貼文\n✅ IG 輪播\n✅ Google 商家\n✅ 推薦簡訊\n⏰ {{$now.format('YYYY-MM-DD HH:mm')}}"
+            }
+          ]
+        },
+        "contentType": "multipart-form-data"
+      },
+      "id": "w1-node-12",
+      "name": "LINE Notify 通知",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1500, 520]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "response",
+              "value": "物件行銷素材已產出完成！請到 Google Sheets 查看結果。"
+            }
+          ]
+        }
+      },
+      "id": "w1-node-13",
+      "name": "回傳 Webhook 回應",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [1740, 400]
+    },
+    {
+      "parameters": {
+        "content": "## W1 物件行銷自動產出\n\n**觸發**：Webhook POST\n**流程**：物件資料 → 6 路 AI 產出 → 合併 → 存 Sheets → LINE 通知\n\n### 設定步驟\n1. 替換 OpenAI Credential\n2. 替換 Google Sheets ID\n3. 替換 LINE Notify Token"
+      },
+      "id": "w1-node-14",
+      "name": "流程說明",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [80, 80]
+    },
+    {
+      "parameters": {
+        "content": "### 6 路 AI 並行產出\n- 591 標題描述\n- LINE 圖卡\n- FB 貼文\n- IG 輪播\n- Google 商家\n- 推薦簡訊"
+      },
+      "id": "w1-node-15",
+      "name": "AI 產出說明",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [620, 40]
+    }
+  ],
+  "connections": {
+    "Webhook 接收物件資料": {
+      "main": [
+        [{ "node": "整理物件資料", "type": "main", "index": 0 }]
+      ]
+    },
+    "整理物件資料": {
+      "main": [
+        [
+          { "node": "AI 產出 591 標題描述", "type": "main", "index": 0 },
+          { "node": "AI 產出 LINE 圖卡", "type": "main", "index": 0 },
+          { "node": "AI 產出 FB 貼文", "type": "main", "index": 0 },
+          { "node": "AI 產出 IG 輪播", "type": "main", "index": 0 },
+          { "node": "AI 產出 Google 商家", "type": "main", "index": 0 },
+          { "node": "AI 產出推薦簡訊", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "AI 產出 591 標題描述": {
+      "main": [
+        [{ "node": "合併所有產出", "type": "main", "index": 0 }]
+      ]
+    },
+    "AI 產出 LINE 圖卡": {
+      "main": [
+        [{ "node": "合併所有產出", "type": "main", "index": 1 }]
+      ]
+    },
+    "AI 產出 FB 貼文": {
+      "main": [
+        [{ "node": "合併所有產出", "type": "main", "index": 2 }]
+      ]
+    },
+    "AI 產出 IG 輪播": {
+      "main": [
+        [{ "node": "合併所有產出", "type": "main", "index": 3 }]
+      ]
+    },
+    "AI 產出 Google 商家": {
+      "main": [
+        [{ "node": "合併所有產出", "type": "main", "index": 4 }]
+      ]
+    },
+    "AI 產出推薦簡訊": {
+      "main": [
+        [{ "node": "合併所有產出", "type": "main", "index": 5 }]
+      ]
+    },
+    "合併所有產出": {
+      "main": [
+        [{ "node": "整理輸出格式", "type": "main", "index": 0 }]
+      ]
+    },
+    "整理輸出格式": {
+      "main": [
+        [
+          { "node": "存入 Google Sheets", "type": "main", "index": 0 },
+          { "node": "LINE Notify 通知", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "存入 Google Sheets": {
+      "main": [
+        [{ "node": "回傳 Webhook 回應", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "timezone": "Asia/Taipei"
+  },
+  "tags": [
+    { "name": "房仲AI" },
+    { "name": "物件行銷" }
+  ]
+}

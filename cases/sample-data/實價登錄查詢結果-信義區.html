@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>實價登錄查詢結果 — 信義區</title>
+  <style>
+    body { font-family: "Microsoft JhengHei", sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+    .header { background: #2d5f8a; color: #fff; padding: 20px; border-radius: 8px 8px 0 0; }
+    .header h1 { margin: 0; font-size: 22px; }
+    .header .subtitle { margin-top: 8px; font-size: 14px; opacity: 0.8; }
+    .filter-bar { background: #fff; padding: 15px 20px; border-bottom: 2px solid #2d5f8a; font-size: 14px; color: #555; }
+    .filter-bar span { margin-right: 20px; }
+    .filter-bar strong { color: #2d5f8a; }
+    .result-count { background: #fff; padding: 12px 20px; color: #666; font-size: 14px; border-bottom: 1px solid #eee; }
+    table { width: 100%; border-collapse: collapse; background: #fff; }
+    th { background: #e8f0f7; color: #2d5f8a; padding: 12px 10px; font-size: 13px; text-align: left; border-bottom: 2px solid #2d5f8a; white-space: nowrap; }
+    td { padding: 10px; font-size: 13px; border-bottom: 1px solid #f0f0f0; color: #444; }
+    tr:hover { background: #f8fbff; }
+    .price { color: #c0392b; font-weight: bold; }
+    .unit-price { color: #2d5f8a; font-weight: bold; }
+    .footer { background: #fff; padding: 15px 20px; border-top: 1px solid #eee; text-align: center; color: #999; font-size: 12px; border-radius: 0 0 8px 8px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>不動產成交案件 實際資訊申報登錄</h1>
+    <div class="subtitle">內政部不動產交易實價查詢服務網（模擬）</div>
+  </div>
+
+  <div class="filter-bar">
+    <span>行政區：<strong>台北市信義區</strong></span>
+    <span>交易類型：<strong>房地(土地+建物)</strong></span>
+    <span>查詢期間：<strong>2024/01 ~ 2025/11</strong></span>
+  </div>
+
+  <div class="result-count">
+    查詢結果共 <strong>10</strong> 筆資料（依成交日期排序）
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>成交日期</th>
+        <th>地址</th>
+        <th>社區</th>
+        <th>樓層</th>
+        <th>坪數</th>
+        <th>格局</th>
+        <th>屋齡</th>
+        <th>總價(萬)</th>
+        <th>單價(萬/坪)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>2025/10</td>
+        <td>信義路五段 15 巷</td>
+        <td>翠亨村</td>
+        <td>8F/14F</td>
+        <td>45.2</td>
+        <td>3房2廳2衛</td>
+        <td>18年</td>
+        <td class="price">4,520</td>
+        <td class="unit-price">100.0</td>
+      </tr>
+      <tr>
+        <td>2025/09</td>
+        <td>松仁路 88 號</td>
+        <td>信義之星</td>
+        <td>22F/28F</td>
+        <td>68.5</td>
+        <td>3房2廳2衛</td>
+        <td>12年</td>
+        <td class="price">10,960</td>
+        <td class="unit-price">160.0</td>
+      </tr>
+      <tr>
+        <td>2025/08</td>
+        <td>基隆路二段 33 巷</td>
+        <td>基隆路公寓</td>
+        <td>3F/5F</td>
+        <td>28.6</td>
+        <td>2房1廳1衛</td>
+        <td>38年</td>
+        <td class="price">1,716</td>
+        <td class="unit-price">60.0</td>
+      </tr>
+      <tr>
+        <td>2025/07</td>
+        <td>吳興街 220 巷</td>
+        <td>吳興國宅</td>
+        <td>5F/12F</td>
+        <td>32.1</td>
+        <td>3房1廳1衛</td>
+        <td>30年</td>
+        <td class="price">2,086</td>
+        <td class="unit-price">65.0</td>
+      </tr>
+      <tr>
+        <td>2025/06</td>
+        <td>松德路 160 號</td>
+        <td>松德大苑</td>
+        <td>15F/22F</td>
+        <td>52.3</td>
+        <td>3房2廳2衛</td>
+        <td>10年</td>
+        <td class="price">5,753</td>
+        <td class="unit-price">110.0</td>
+      </tr>
+      <tr>
+        <td>2025/04</td>
+        <td>信義路五段 22 號</td>
+        <td>信義華廈</td>
+        <td>6F/10F</td>
+        <td>38.7</td>
+        <td>2房2廳1衛</td>
+        <td>22年</td>
+        <td class="price">3,096</td>
+        <td class="unit-price">80.0</td>
+      </tr>
+      <tr>
+        <td>2025/02</td>
+        <td>松高路 12 號</td>
+        <td>國泰信義</td>
+        <td>18F/25F</td>
+        <td>55.8</td>
+        <td>3房2廳2衛</td>
+        <td>8年</td>
+        <td class="price">6,696</td>
+        <td class="unit-price">120.0</td>
+      </tr>
+      <tr>
+        <td>2024/11</td>
+        <td>永吉路 300 巷</td>
+        <td>永吉新城</td>
+        <td>4F/7F</td>
+        <td>25.4</td>
+        <td>2房1廳1衛</td>
+        <td>25年</td>
+        <td class="price">1,778</td>
+        <td class="unit-price">70.0</td>
+      </tr>
+      <tr>
+        <td>2024/08</td>
+        <td>松仁路 55 巷</td>
+        <td>松仁翠庭</td>
+        <td>10F/16F</td>
+        <td>42.0</td>
+        <td>2房2廳1衛</td>
+        <td>15年</td>
+        <td class="price">3,780</td>
+        <td class="unit-price">90.0</td>
+      </tr>
+      <tr>
+        <td>2024/05</td>
+        <td>信義路五段 8 巷</td>
+        <td>翠亨村</td>
+        <td>12F/14F</td>
+        <td>48.6</td>
+        <td>3房2廳2衛</td>
+        <td>17年</td>
+        <td class="price">4,617</td>
+        <td class="unit-price">95.0</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    ※ 此為教學模擬資料，非真實實價登錄查詢結果。所有地址與金額均為虛構，僅供課程練習使用。<br>
+    ※ 實際查詢請至內政部不動產交易實價查詢服務網 https://lvr.land.moi.gov.tw/
+  </div>
+</body>
+</html>
