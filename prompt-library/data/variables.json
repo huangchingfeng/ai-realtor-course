@@ -5,9 +5,9 @@
       "fields": {
         "property_area": { "label": "區域", "type": "text", "placeholder": "例：信義區" },
         "property_community": { "label": "社區名稱", "type": "text", "placeholder": "例：翠亨村" },
-        "property_size": { "label": "坪數", "type": "text", "placeholder": "例：30 坪", "suffix": "" },
+        "property_size": { "label": "坪數", "type": "text", "placeholder": "例：30 坪" },
         "property_rooms": { "label": "格局", "type": "text", "placeholder": "例：3 房" },
-        "property_age": { "label": "屋齡", "type": "text", "placeholder": "例：10 年", "suffix": "" },
+        "property_age": { "label": "屋齡", "type": "text", "placeholder": "例：10 年" },
         "property_type": { "label": "物件類型", "type": "text", "placeholder": "例：住宅、套房、店面" },
         "property_features": { "label": "特色亮點", "type": "textarea", "placeholder": "例：採光好、近捷運" }
       }
@@ -36,7 +36,7 @@
     "time": {
       "label": "時間參數", "icon": "📅",
       "fields": {
-        "silent_days": { "label": "沉默天數", "type": "text", "placeholder": "例：7", "suffix": "" },
+        "silent_days": { "label": "沉默天數", "type": "text", "placeholder": "例：7" },
         "analysis_period": { "label": "分析期間", "type": "text", "placeholder": "例：3 年" },
         "closing_date": { "label": "成交日期", "type": "text", "placeholder": "例：2024 年 3 月 15 日" }
       }
