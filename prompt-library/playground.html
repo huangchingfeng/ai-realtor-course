@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt 練習場 | AI 超級房仲</title>
+  <meta name="description" content="填入你的物件與客戶資料，即時產出客製化 Prompt">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/playground.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎯</text></svg>">
+</head>
+<body>
+
+  <!-- 密碼覆蓋層 -->
+  <div class="password-overlay" id="pw-overlay">
+    <div class="password-card">
+      <div class="pw-icon">🔐</div>
+      <h2>Prompt 練習場</h2>
+      <p>此為課程學員專屬資源，請輸入課程密碼</p>
+      <div class="pw-input-group">
+        <input type="password" id="pw-input" placeholder="請輸入密碼" autocomplete="off">
+        <button id="pw-submit">進入</button>
+      </div>
+      <div class="pw-error" id="pw-error"></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-left">
+      <span class="header-icon">🎯</span>
+      <span class="header-title">Prompt 練習場</span>
+    </div>
+    <div class="header-right">
+      <a href="index.html" class="badge">📋 指令庫</a>
+      <button class="badge accent" id="profile-btn">💾 我的資料</button>
+    </div>
+  </header>
+
+  <!-- 主布局 -->
+  <div class="pg-layout">
+    <!-- 左欄：選擇 + 表單 -->
+    <aside class="pg-sidebar" id="pg-sidebar">
+      <!-- Prompt 選擇器 -->
+      <div class="pg-section">
+        <label class="pg-label">選擇 Prompt 模板</label>
+        <select id="prompt-select" class="pg-select">
+          <option value="">請選擇...</option>
+        </select>
+      </div>
+
+      <!-- Prompt 資訊 -->
+      <div id="prompt-meta" class="pg-meta hidden"></div>
+
+      <!-- 變數表單 -->
+      <div id="var-form" class="pg-form"></div>
+
+      <!-- 快速動作 -->
+      <div id="form-actions" class="pg-form-actions hidden">
+        <button id="save-profile-btn" class="pg-btn-secondary">💾 儲存資料組合</button>
+        <button id="reset-form-btn" class="pg-btn-secondary">🔄 清空表單</button>
+      </div>
+    </aside>
+
+    <!-- 右欄：預覽 -->
+    <main class="pg-main">
+      <div class="pg-preview-header">
+        <span class="pg-label">即時預覽</span>
+        <div class="pg-preview-legend">
+          <span class="legend-item"><span class="legend-dot slot"></span>可替換</span>
+          <span class="legend-item"><span class="legend-dot replaced"></span>已替換</span>
+        </div>
+      </div>
+      <div id="preview-content" class="pg-preview-content">
+        <div class="pg-empty">
+          <div class="pg-empty-icon">🎯</div>
+          <h3>選擇一個 Prompt 開始練習</h3>
+          <p>從左側選擇模板，填入你的物件與客戶資料<br>右側會即時預覽客製化的 Prompt</p>
+        </div>
+      </div>
+      <div id="preview-actions" class="pg-preview-actions hidden">
+        <button id="copy-btn" class="pg-btn-primary">📋 複製客製化 Prompt</button>
+        <span id="var-count" class="pg-var-count"></span>
+      </div>
+    </main>
+  </div>
+
+  <!-- 我的資料 Modal -->
+  <div class="modal-overlay hidden" id="profile-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>💾 我的資料</h2>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">儲存常用的物件或客戶資料，下次選 Prompt 時一鍵載入。</p>
+        <div id="profile-list" class="profile-list"></div>
+        <div id="profile-empty" class="profile-empty">
+          <p>尚未儲存任何資料組合</p>
+          <p class="text-muted">填完表單後點「儲存資料組合」即可新增</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 儲存命名 Modal -->
+  <div class="modal-overlay hidden" id="save-modal">
+    <div class="modal-card modal-sm">
+      <div class="modal-header">
+        <h2>儲存資料組合</h2>
+        <button class="modal-close" id="save-modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <label class="pg-label">取個名稱方便辨識</label>
+        <input type="text" id="profile-name-input" class="pg-input" placeholder="例：板橋2房物件 / 客戶王大明">
+        <button id="confirm-save-btn" class="pg-btn-primary" style="margin-top:12px;width:100%">儲存</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/playground.js"></script>
+</body>
+</html>

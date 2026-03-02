@@ -1,0 +1,358 @@
+{
+  "variableGroups": {
+    "property": {
+      "label": "物件資訊", "icon": "🏠",
+      "fields": {
+        "property_area": { "label": "區域", "type": "text", "placeholder": "例：信義區" },
+        "property_community": { "label": "社區名稱", "type": "text", "placeholder": "例：翠亨村" },
+        "property_size": { "label": "坪數", "type": "text", "placeholder": "例：30 坪", "suffix": "" },
+        "property_rooms": { "label": "格局", "type": "text", "placeholder": "例：3 房" },
+        "property_age": { "label": "屋齡", "type": "text", "placeholder": "例：10 年", "suffix": "" },
+        "property_type": { "label": "物件類型", "type": "text", "placeholder": "例：住宅、套房、店面" },
+        "property_features": { "label": "特色亮點", "type": "textarea", "placeholder": "例：採光好、近捷運" }
+      }
+    },
+    "finance": {
+      "label": "金融資訊", "icon": "💰",
+      "fields": {
+        "asking_price": { "label": "開價/售價", "type": "text", "placeholder": "例：1,500 萬" },
+        "budget": { "label": "預算", "type": "text", "placeholder": "例：1,200-1,500 萬" },
+        "monthly_rent": { "label": "月租", "type": "text", "placeholder": "例：18,000" },
+        "management_fee": { "label": "管理費", "type": "text", "placeholder": "例：每月 2,500" },
+        "down_payment": { "label": "頭期款/斡旋金", "type": "text", "placeholder": "例：200 萬" },
+        "listing_price": { "label": "掛牌價", "type": "text", "placeholder": "例：1,680 萬" },
+        "negotiation_price": { "label": "議價金額", "type": "text", "placeholder": "例：1,500 萬" }
+      }
+    },
+    "client": {
+      "label": "客戶資訊", "icon": "👤",
+      "fields": {
+        "client_name": { "label": "客戶姓名", "type": "text", "placeholder": "例：王大明" },
+        "client_age": { "label": "年齡", "type": "text", "placeholder": "例：32 歲" },
+        "client_type": { "label": "客戶類型", "type": "text", "placeholder": "例：首購族、換屋族" },
+        "client_needs": { "label": "需求描述", "type": "textarea", "placeholder": "例：一家四口想換屋" }
+      }
+    },
+    "time": {
+      "label": "時間參數", "icon": "📅",
+      "fields": {
+        "silent_days": { "label": "沉默天數", "type": "text", "placeholder": "例：7", "suffix": "" },
+        "analysis_period": { "label": "分析期間", "type": "text", "placeholder": "例：3 年" },
+        "closing_date": { "label": "成交日期", "type": "text", "placeholder": "例：2024 年 3 月 15 日" }
+      }
+    },
+    "agent": {
+      "label": "業務員資訊", "icon": "🧑‍💼",
+      "fields": {
+        "agent_name": { "label": "業務員名稱", "type": "text", "placeholder": "例：阿峰" },
+        "agent_area": { "label": "經營區域", "type": "text", "placeholder": "例：板橋、中和" },
+        "agent_years": { "label": "年資", "type": "text", "placeholder": "例：5 年" },
+        "brand_name": { "label": "品牌/公司名", "type": "text", "placeholder": "例：信義房屋" },
+        "prev_company": { "label": "前公司", "type": "text", "placeholder": "例：永慶" },
+        "deal_count": { "label": "成交件數", "type": "text", "placeholder": "例：120 件" },
+        "team_size": { "label": "團隊人數", "type": "text", "placeholder": "例：12 位業務" },
+        "platform": { "label": "平台", "type": "text", "placeholder": "例：FB、IG、LINE" }
+      }
+    },
+    "content": {
+      "label": "內容行銷", "icon": "✍️",
+      "fields": {
+        "content_topic": { "label": "主題/關鍵字", "type": "textarea", "placeholder": "例：房市政策新知、房貸利率小知識" },
+        "hook_sentence": { "label": "開頭金句", "type": "textarea", "placeholder": "吸引點擊的第一句話" },
+        "pain_point": { "label": "痛點描述", "type": "textarea", "placeholder": "目標受眾的痛點" },
+        "lifestyle_scene": { "label": "生活場景", "type": "textarea", "placeholder": "描述理想生活畫面" },
+        "seo_keyword_1": { "label": "SEO 關鍵字 1", "type": "text", "placeholder": "例：房仲推薦" },
+        "seo_keyword_2": { "label": "SEO 關鍵字 2", "type": "text", "placeholder": "例：成交實績" }
+      }
+    },
+    "holiday": {
+      "label": "節慶行銷", "icon": "🎉",
+      "fields": {
+        "holiday_name": { "label": "節慶名稱", "type": "text", "placeholder": "例：農曆新年" },
+        "holiday_theme_1": { "label": "主題 1", "type": "text", "placeholder": "例：新年新家" },
+        "holiday_theme_2": { "label": "主題 2", "type": "text", "placeholder": "例：開運好宅" },
+        "holiday_metaphor": { "label": "節慶比喻", "type": "text", "placeholder": "例：採光好 = 迎接新年第一道陽光" },
+        "holiday_cta": { "label": "行動呼籲", "type": "text", "placeholder": "例：新年新家，立即預約" }
+      }
+    }
+  },
+  "promptVariables": {
+    "M1-01": [
+      { "key": "property_area", "defaultInPrompt": "信義區" },
+      { "key": "property_rooms", "defaultInPrompt": "3 房" },
+      { "key": "property_community", "defaultInPrompt": "翠亨村、信義之星、國泰信義" },
+      { "key": "analysis_period", "defaultInPrompt": "3 年" }
+    ],
+    "M1-02": [
+      { "key": "client_type", "defaultInPrompt": "首購族" },
+      { "key": "client_name", "defaultInPrompt": "王大明" },
+      { "key": "budget", "defaultInPrompt": "1,500 萬" },
+      { "key": "property_area", "defaultInPrompt": "板橋新板特區" },
+      { "key": "property_rooms", "defaultInPrompt": "2 房" },
+      { "key": "property_size", "defaultInPrompt": "20-30 坪" },
+      { "key": "analysis_period", "defaultInPrompt": "2 年" }
+    ],
+    "M1-03": [
+      { "key": "client_type", "defaultInPrompt": "投資客" },
+      { "key": "client_name", "defaultInPrompt": "張先生" },
+      { "key": "budget", "defaultInPrompt": "800 萬" },
+      { "key": "property_area", "defaultInPrompt": "中山區" },
+      { "key": "property_type", "defaultInPrompt": "套房" },
+      { "key": "property_size", "defaultInPrompt": "10-15 坪" },
+      { "key": "analysis_period", "defaultInPrompt": "1 年" }
+    ],
+    "M1-04": [
+      { "key": "client_name", "defaultInPrompt": "陳太太" },
+      { "key": "budget", "defaultInPrompt": "3,000 萬" },
+      { "key": "property_area", "defaultInPrompt": "大安區" },
+      { "key": "client_needs", "defaultInPrompt": "一家四口想換屋" },
+      { "key": "analysis_period", "defaultInPrompt": "5 年" }
+    ],
+    "M1-05": [
+      { "key": "property_area", "defaultInPrompt": "林口重劃區" },
+      { "key": "property_type", "defaultInPrompt": "預售屋" },
+      { "key": "analysis_period", "defaultInPrompt": "3 年" }
+    ],
+    "M1-06": [
+      { "key": "property_area", "defaultInPrompt": "竹北" },
+      { "key": "property_community", "defaultInPrompt": "竹北高鐵特區和關埔重劃區" },
+      { "key": "property_rooms", "defaultInPrompt": "3 房" },
+      { "key": "budget", "defaultInPrompt": "2,500 萬" },
+      { "key": "client_type", "defaultInPrompt": "科技業客戶" },
+      { "key": "analysis_period", "defaultInPrompt": "5 年" }
+    ],
+    "M1-07": [
+      { "key": "property_area", "defaultInPrompt": "信義計畫區" },
+      { "key": "property_size", "defaultInPrompt": "50 坪" },
+      { "key": "monthly_rent", "defaultInPrompt": "15 萬" },
+      { "key": "property_type", "defaultInPrompt": "辦公室" }
+    ],
+    "M1-08": [
+      { "key": "client_name", "defaultInPrompt": "老陳" },
+      { "key": "client_type", "defaultInPrompt": "投資客" },
+      { "key": "property_type", "defaultInPrompt": "法拍屋" }
+    ],
+    "M1-09": [
+      { "key": "client_name", "defaultInPrompt": "小陳" },
+      { "key": "client_age", "defaultInPrompt": "28 歲" },
+      { "key": "client_needs", "defaultInPrompt": "月薪 5 萬" },
+      { "key": "monthly_rent", "defaultInPrompt": "1.5 萬" },
+      { "key": "property_area", "defaultInPrompt": "台北" },
+      { "key": "asking_price", "defaultInPrompt": "1,000 萬" },
+      { "key": "down_payment", "defaultInPrompt": "200 萬" },
+      { "key": "property_rooms", "defaultInPrompt": "2 房" }
+    ],
+    "M1-10": [
+      { "key": "asking_price", "defaultInPrompt": "1,000 萬 / 1,500 萬 / 2,000 萬" },
+      { "key": "analysis_period", "defaultInPrompt": "30 年" }
+    ],
+    "M2-01": [
+      { "key": "property_area", "defaultInPrompt": "信義區" },
+      { "key": "property_community", "defaultInPrompt": "翠亨村" }
+    ],
+    "M2-02": [
+      { "key": "client_name", "defaultInPrompt": "王大明" },
+      { "key": "client_age", "defaultInPrompt": "32 歲" },
+      { "key": "client_type", "defaultInPrompt": "科技業工程師" },
+      { "key": "budget", "defaultInPrompt": "1,200-1,500 萬" },
+      { "key": "property_rooms", "defaultInPrompt": "2 房" },
+      { "key": "property_size", "defaultInPrompt": "20-30 坪" },
+      { "key": "client_needs", "defaultInPrompt": "南港軟體園區（希望捷運 30 分鐘內）" },
+      { "key": "property_age", "defaultInPrompt": "屋齡 10 年內" }
+    ],
+    "M2-03": [
+      { "key": "property_area", "defaultInPrompt": "信義區" },
+      { "key": "analysis_period", "defaultInPrompt": "2024 年 X 月" }
+    ],
+    "M2-04": [
+      { "key": "property_area", "defaultInPrompt": "信義區" },
+      { "key": "property_rooms", "defaultInPrompt": "3 房" },
+      { "key": "property_size", "defaultInPrompt": "45 坪" },
+      { "key": "property_age", "defaultInPrompt": "屋齡 12 年" }
+    ],
+    "M2-05": [
+      { "key": "client_name", "defaultInPrompt": "張先生" },
+      { "key": "property_area", "defaultInPrompt": "中山區南京東路" },
+      { "key": "property_size", "defaultInPrompt": "15 坪（權狀），室內約 12 坪" },
+      { "key": "property_age", "defaultInPrompt": "8 年" },
+      { "key": "asking_price", "defaultInPrompt": "880 萬" },
+      { "key": "monthly_rent", "defaultInPrompt": "月租約 18,000-22,000" },
+      { "key": "management_fee", "defaultInPrompt": "每月 2,500" }
+    ],
+    "M2-06": [
+      { "key": "property_type", "defaultInPrompt": "新建案" }
+    ],
+    "M2-07": [
+      { "key": "property_area", "defaultInPrompt": "東區忠孝東路四段" },
+      { "key": "property_size", "defaultInPrompt": "25 坪（前面 15 坪店面 + 後面 10 坪倉庫）" },
+      { "key": "asking_price", "defaultInPrompt": "6,800 萬" },
+      { "key": "monthly_rent", "defaultInPrompt": "月租 15 萬" },
+      { "key": "property_type", "defaultInPrompt": "服飾店" },
+      { "key": "analysis_period", "defaultInPrompt": "租約剩 2 年" }
+    ],
+    "M2-08": [
+      { "key": "client_name", "defaultInPrompt": "陳小明" },
+      { "key": "client_age", "defaultInPrompt": "35 歲" },
+      { "key": "brand_name", "defaultInPrompt": "信義房屋" },
+      { "key": "prev_company", "defaultInPrompt": "永慶" },
+      { "key": "property_area", "defaultInPrompt": "信義區、大安區" },
+      { "key": "deal_count", "defaultInPrompt": "120 件" },
+      { "key": "agent_years", "defaultInPrompt": "5 年" }
+    ],
+    "M2-09": [
+      { "key": "client_name", "defaultInPrompt": "王大明" },
+      { "key": "property_community", "defaultInPrompt": "板橋新板特區 XX 社區" },
+      { "key": "property_rooms", "defaultInPrompt": "2 房" },
+      { "key": "asking_price", "defaultInPrompt": "1,580 萬" },
+      { "key": "property_size", "defaultInPrompt": "28 坪（含車位）" },
+      { "key": "closing_date", "defaultInPrompt": "2024 年 3 月 15 日" },
+      { "key": "client_age", "defaultInPrompt": "32 歲" },
+      { "key": "client_type", "defaultInPrompt": "首購族" }
+    ],
+    "M2-10": [
+      { "key": "brand_name", "defaultInPrompt": "信義房屋信義旗艦店" },
+      { "key": "team_size", "defaultInPrompt": "12 位業務" },
+      { "key": "analysis_period", "defaultInPrompt": "2024 年 1-3 月" }
+    ],
+    "M3-01": [],
+    "M3-02": [],
+    "M3-03": [],
+    "M3-04": [
+      { "key": "client_type_1", "defaultInPrompt": "首購族", "label": "客戶類型 1" },
+      { "key": "client_type_2", "defaultInPrompt": "換屋族", "label": "客戶類型 2" },
+      { "key": "client_type_3", "defaultInPrompt": "投資客", "label": "客戶類型 3" }
+    ],
+    "M3-05": [
+      { "key": "lifestyle_scene", "defaultInPrompt": "週六早上，推開窗，陽光灑進客廳..." }
+    ],
+    "M3-06": [],
+    "M3-07": [],
+    "M3-08": [
+      { "key": "holiday_name", "defaultInPrompt": "農曆新年" },
+      { "key": "holiday_theme_1", "defaultInPrompt": "新年新家" },
+      { "key": "holiday_theme_2", "defaultInPrompt": "開運好宅" },
+      { "key": "holiday_metaphor", "defaultInPrompt": "採光好 = 迎接新年第一道陽光" },
+      { "key": "holiday_cta", "defaultInPrompt": "新年新家，立即預約" }
+    ],
+    "M3-09": [
+      { "key": "property_area", "defaultInPrompt": "[區域]" },
+      { "key": "seo_keyword_1", "defaultInPrompt": "房仲推薦" },
+      { "key": "seo_keyword_2", "defaultInPrompt": "成交實績" }
+    ],
+    "M3-10": [
+      { "key": "property_area", "defaultInPrompt": "板橋" },
+      { "key": "property_rooms", "defaultInPrompt": "2 房" },
+      { "key": "budget", "defaultInPrompt": "1,500" },
+      { "key": "hook_sentence", "defaultInPrompt": "板橋這間 2 房，我帶看 3 組都搶著要出價" },
+      { "key": "pain_point", "defaultInPrompt": "在板橋找 2 房，預算 1,500 以內，幾乎不可能？" }
+    ],
+    "M4-01": [
+      { "key": "client_name", "defaultInPrompt": "王大明" },
+      { "key": "property_area", "defaultInPrompt": "板橋" },
+      { "key": "property_rooms", "defaultInPrompt": "2 房" }
+    ],
+    "M4-02": [
+      { "key": "client_name", "defaultInPrompt": "李美玲" },
+      { "key": "property_area", "defaultInPrompt": "信義區" },
+      { "key": "property_rooms", "defaultInPrompt": "3 房" },
+      { "key": "silent_days", "defaultInPrompt": "3" }
+    ],
+    "M4-03": [
+      { "key": "client_name", "defaultInPrompt": "王大明" },
+      { "key": "property_area", "defaultInPrompt": "板橋" },
+      { "key": "property_rooms", "defaultInPrompt": "2 房" },
+      { "key": "silent_days", "defaultInPrompt": "7" }
+    ],
+    "M4-04": [
+      { "key": "property_area", "defaultInPrompt": "信義區" },
+      { "key": "property_rooms", "defaultInPrompt": "3 房" },
+      { "key": "listing_price", "defaultInPrompt": "4,200 萬" },
+      { "key": "property_size", "defaultInPrompt": "45 坪" }
+    ],
+    "M4-05": [
+      { "key": "client_name", "defaultInPrompt": "趙小萱" },
+      { "key": "client_type", "defaultInPrompt": "首購族" },
+      { "key": "client_age", "defaultInPrompt": "28歲" },
+      { "key": "budget", "defaultInPrompt": "1,000 萬" },
+      { "key": "silent_days", "defaultInPrompt": "14" }
+    ],
+    "M4-06": [
+      { "key": "client_needs", "defaultInPrompt": "10 位客戶" }
+    ],
+    "M4-07": [
+      { "key": "property_area", "defaultInPrompt": "板橋新板特區" },
+      { "key": "property_rooms", "defaultInPrompt": "2 房" },
+      { "key": "property_size", "defaultInPrompt": "32 坪" },
+      { "key": "property_age", "defaultInPrompt": "8 年" },
+      { "key": "listing_price", "defaultInPrompt": "1,680 萬" },
+      { "key": "asking_price", "defaultInPrompt": "1,600 萬" },
+      { "key": "negotiation_price", "defaultInPrompt": "1,500 萬" },
+      { "key": "down_payment", "defaultInPrompt": "10 萬" }
+    ],
+    "M4-08": [
+      { "key": "client_name", "defaultInPrompt": "王大明、李美玲、趙小萱" },
+      { "key": "silent_days", "defaultInPrompt": "7 / 21 / 30" }
+    ],
+    "M4-09": [
+      { "key": "client_name", "defaultInPrompt": "王大明" },
+      { "key": "property_area", "defaultInPrompt": "板橋新板特區" },
+      { "key": "property_rooms", "defaultInPrompt": "2 房" },
+      { "key": "asking_price", "defaultInPrompt": "1,580 萬" },
+      { "key": "client_type", "defaultInPrompt": "首購族" },
+      { "key": "client_age", "defaultInPrompt": "32 歲" }
+    ],
+    "M4-10": [
+      { "key": "client_type", "defaultInPrompt": "首購族 / 投資客 / 換屋族 / 已成交" },
+      { "key": "client_needs", "defaultInPrompt": "農曆新年關懷" }
+    ],
+    "M5-01": [
+      { "key": "agent_area", "defaultInPrompt": "LINE群組" },
+      { "key": "content_topic", "defaultInPrompt": "房市政策新知、房貸利率小知識、裝修實用建議、居家風水小提醒、買賣法規提醒" },
+      { "key": "platform", "defaultInPrompt": "LINE" }
+    ],
+    "M5-02": [
+      { "key": "client_type", "defaultInPrompt": "新婚夫妻、投資客、退休夫妻" },
+      { "key": "agent_area", "defaultInPrompt": "板橋、中和" },
+      { "key": "platform", "defaultInPrompt": "FB" }
+    ],
+    "M5-03": [
+      { "key": "agent_area", "defaultInPrompt": "板橋、中和區域" },
+      { "key": "client_type", "defaultInPrompt": "首購族" },
+      { "key": "platform", "defaultInPrompt": "IG" },
+      { "key": "agent_name", "defaultInPrompt": "房仲" }
+    ],
+    "M5-04": [
+      { "key": "platform", "defaultInPrompt": "Threads" },
+      { "key": "content_topic", "defaultInPrompt": "買房冷知識、房貸秘密、裝修地雷、法規陷阱、風水趣聞" }
+    ],
+    "M5-05": [
+      { "key": "platform", "defaultInPrompt": "電子報" },
+      { "key": "content_topic", "defaultInPrompt": "市場數據速報、本月推薦物件、購屋小知識專欄" }
+    ],
+    "M5-06": [
+      { "key": "agent_area", "defaultInPrompt": "板橋" },
+      { "key": "content_topic", "defaultInPrompt": "2025 板橋房市完整分析" },
+      { "key": "platform", "defaultInPrompt": "YouTube" }
+    ],
+    "M5-07": [
+      { "key": "agent_name", "defaultInPrompt": "阿峰" },
+      { "key": "content_topic", "defaultInPrompt": "首購族最常犯的 5 個錯誤" },
+      { "key": "platform", "defaultInPrompt": "Podcast" }
+    ],
+    "M5-08": [
+      { "key": "agent_area", "defaultInPrompt": "板橋" },
+      { "key": "content_topic", "defaultInPrompt": "板橋買房、板橋首購族、板橋vs其他" },
+      { "key": "platform", "defaultInPrompt": "部落格" }
+    ],
+    "M5-09": [
+      { "key": "content_topic", "defaultInPrompt": "貸款、稅務、裝修、議價、法律、風水" },
+      { "key": "platform", "defaultInPrompt": "IG、社群" }
+    ],
+    "M5-10": [
+      { "key": "agent_name", "defaultInPrompt": "房仲" },
+      { "key": "agent_area", "defaultInPrompt": "（待填）" },
+      { "key": "client_type", "defaultInPrompt": "（待定義）" },
+      { "key": "content_topic", "defaultInPrompt": "個人品牌定位、SWOT、USP、品牌故事、30秒電梯簡報、90天行動計畫" }
+    ]
+  }
+}
