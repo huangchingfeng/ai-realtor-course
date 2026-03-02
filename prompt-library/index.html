@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 超級房仲 Prompt 指令庫</title>
+  <meta name="description" content="房仲 AI 實戰課程 — 50 個精選 Prompt 指令，一鍵複製立即使用">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🏠</text></svg>">
+</head>
+<body>
+
+  <!-- 密碼覆蓋層 -->
+  <div class="password-overlay" id="pw-overlay">
+    <div class="password-card">
+      <div class="pw-icon">🔐</div>
+      <h2>AI 超級房仲 Prompt 指令庫</h2>
+      <p>此為課程學員專屬資源，請輸入課程密碼</p>
+      <div class="pw-input-group">
+        <input type="password" id="pw-input" placeholder="請輸入密碼" autocomplete="off">
+        <button id="pw-submit">進入</button>
+      </div>
+      <div class="pw-error" id="pw-error"></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-left">
+      <span class="header-icon">🏠</span>
+      <span class="header-title">AI 超級房仲 Prompt 指令庫</span>
+    </div>
+    <div class="header-right">
+      <span class="badge" id="total-badge">0 個案例</span>
+      <span class="badge accent" id="filter-badge">顯示 0 個</span>
+    </div>
+  </header>
+
+  <!-- 手機版搜尋+篩選 -->
+  <div class="mobile-bar" id="mobile-bar">
+    <input type="text" id="mobile-search" class="search-input" placeholder="🔍 搜尋案例或指令內容...">
+    <button class="filter-toggle-btn" id="mobile-filter-btn">⚙ 篩選</button>
+    <div class="mobile-filter-panel" id="mobile-filter-panel">
+      <div class="filter-section">
+        <div class="filter-label">難度</div>
+        <div id="mobile-level-chips" class="chip-group"></div>
+      </div>
+      <div class="filter-section">
+        <div class="filter-label">工具</div>
+        <div id="mobile-tool-chips" class="chip-group"></div>
+      </div>
+    </div>
+    <div class="mobile-tabs" id="mobile-tabs"></div>
+  </div>
+
+  <!-- 主布局 -->
+  <div class="app-layout">
+    <!-- 桌面版 Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <input type="text" id="desktop-search" class="search-input" placeholder="🔍 搜尋案例或指令內容...">
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">模組</div>
+        <div id="module-tabs" class="module-tabs"></div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">難度</div>
+        <div id="level-filters" class="checkbox-group"></div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">工具</div>
+        <div id="tool-filters" class="checkbox-group"></div>
+      </div>
+    </aside>
+
+    <!-- 卡片列表 -->
+    <main class="main-content">
+      <div id="card-list" class="card-list"></div>
+      <div id="empty-state" class="empty-state hidden">
+        <div class="empty-icon">🔍</div>
+        <h3>找不到符合的案例</h3>
+        <p>試試其他關鍵字，或調整篩選條件</p>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
