@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 工具中心 | AI 超級房仲</title>
+  <meta name="description" content="6 大 AI 實戰工具，填入資料一鍵產出客製化 Prompt">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/tools.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🛠</text></svg>">
+</head>
+<body>
+
+  <!-- 密碼覆蓋層 -->
+  <div class="password-overlay" id="pw-overlay">
+    <div class="password-card">
+      <div class="pw-icon">🔐</div>
+      <h2>AI 工具中心</h2>
+      <p>此為課程學員專屬資源，請輸入課程密碼</p>
+      <div class="pw-input-group">
+        <input type="password" id="pw-input" placeholder="請輸入密碼" autocomplete="off">
+        <button id="pw-submit">進入</button>
+      </div>
+      <div class="pw-error" id="pw-error"></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-left">
+      <span class="header-icon">🛠</span>
+      <span class="header-title">AI 工具中心</span>
+    </div>
+    <div class="header-right">
+      <a href="index.html" class="badge">📋 指令庫</a>
+      <a href="playground.html" class="badge">🎯 練習場</a>
+    </div>
+  </header>
+
+  <!-- 工具中心首頁 -->
+  <div class="tools-hub" style="padding-top: 80px;">
+    <div class="tools-hub-title">
+      <h1>AI 房仲工具中心</h1>
+    </div>
+    <p class="tools-hub-desc">
+      不用挑 Prompt，直接面對你的工作場景<br>
+      填入真實資料，一鍵產出可以直接貼到 ChatGPT 的 Prompt
+    </p>
+
+    <div class="tools-grid" id="tools-grid">
+      <!-- JS 動態生成 -->
+    </div>
+  </div>
+
+  <script src="js/tools-common.js"></script>
+  <script>
+  ;(function() {
+    'use strict';
+    ToolsCommon.checkPassword();
+
+    var toolList = [
+      { id: 'price-check', icon: '📊', name: '實價行情速查', desc: '填入物件資訊，3 分鐘產出專業行情分析 Prompt', time: '省 60 分鐘', scenarios: 4 },
+      { id: 'follow-up', icon: '👤', name: '客戶跟進助理', desc: '選擇客戶階段，一鍵產出專業跟進話術 Prompt', time: '省 30 分鐘', scenarios: 8 },
+      { id: 'showing-prep', icon: '🏠', name: '帶看準備包', desc: '帶看前一鍵產出行情+社區+亮點+提案 4 份 Prompt', time: '省 40 分鐘', scenarios: 2 },
+      { id: 'negotiation', icon: '💰', name: '議價策略模擬器', desc: '填入買賣雙方條件，AI 幫你規劃議價策略', time: '省 20 分鐘', scenarios: 4 },
+      { id: 'market-brief', icon: '📰', name: '房市快報產生器', desc: '選擇平台和主題，批量產出可直接發的房市內容', time: '省 2 小時', scenarios: 5 },
+      { id: 'property-doc', icon: '📋', name: '不動產說明書助理', desc: '填入物件資訊，產出 591 文案或委售提案 Prompt', time: '省 30 分鐘', scenarios: 4 }
+    ];
+
+    var grid = document.getElementById('tools-grid');
+    toolList.forEach(function(t) {
+      var a = document.createElement('a');
+      a.href = 'tools/' + t.id + '.html';
+      a.className = 'tool-card';
+      a.innerHTML =
+        '<div class="tool-card-icon">' + t.icon + '</div>' +
+        '<div class="tool-card-name">' + t.name + '</div>' +
+        '<div class="tool-card-desc">' + t.desc + '</div>' +
+        '<div class="tool-card-meta">' +
+          '<span class="tool-card-time">' + t.time + '</span>' +
+          '<span class="tool-card-scenarios">' + t.scenarios + ' 個場景</span>' +
+        '</div>';
+      grid.appendChild(a);
+    });
+  })();
+  </script>
+</body>
+</html>

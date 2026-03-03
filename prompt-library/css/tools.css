@@ -1,0 +1,526 @@
+/* =============================================
+   AI 房仲工具中心 — tools.css
+   沿用 style.css 的 CSS 變數
+   ============================================= */
+
+/* --- 工具中心首頁 --- */
+.tools-hub {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.tools-hub-title {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.tools-hub-title h1 {
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tools-hub-desc {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 15px;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.tool-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+.tool-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,212,255,0.12);
+}
+
+.tool-card-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.tool-card-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.tool-card-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  flex: 1;
+  margin-bottom: 12px;
+}
+
+.tool-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tool-card-time {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(52,199,89,0.12);
+  color: var(--green);
+  font-weight: 600;
+}
+
+.tool-card-scenarios {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+/* --- 工具子頁布局 --- */
+.tool-layout {
+  display: flex;
+  padding-top: 56px;
+  min-height: 100vh;
+}
+
+.tool-sidebar {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  bottom: 0;
+  width: 400px;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.tool-main {
+  flex: 1;
+  margin-left: 400px;
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 56px);
+}
+
+/* --- 場景選擇器 --- */
+.scenario-section {
+  margin-bottom: 20px;
+}
+
+.scenario-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.scenario-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.scenario-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.scenario-item:hover {
+  border-color: var(--primary);
+  background: rgba(0,212,255,0.04);
+}
+
+.scenario-item.active {
+  border-color: var(--primary);
+  background: rgba(0,212,255,0.08);
+  box-shadow: 0 0 0 2px rgba(0,212,255,0.15);
+}
+
+.scenario-item .scenario-emoji {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.scenario-item .scenario-text {
+  flex: 1;
+}
+
+.scenario-item .scenario-name {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.scenario-item .scenario-desc {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+/* --- 表單區 --- */
+.tool-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.tool-form-group {
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  border-left: 3px solid var(--primary);
+}
+
+.tool-form-group-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+.tool-field {
+  margin-bottom: 10px;
+}
+
+.tool-field:last-child {
+  margin-bottom: 0;
+}
+
+.tool-field label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.tool-field label .required {
+  color: var(--accent);
+  margin-left: 2px;
+}
+
+.tool-field input,
+.tool-field select,
+.tool-field textarea {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: var(--font-sans);
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.tool-field textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.tool-field input:focus,
+.tool-field select:focus,
+.tool-field textarea:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0,212,255,0.12);
+}
+
+.tool-field input.has-value,
+.tool-field select.has-value,
+.tool-field textarea.has-value {
+  border-color: rgba(0,212,255,0.35);
+  background: rgba(0,212,255,0.04);
+}
+
+/* --- 產出按鈕 --- */
+.tool-actions {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.tool-generate-btn {
+  width: 100%;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, var(--primary), #0099CC);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--bg);
+  font-size: 15px;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tool-generate-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0,212,255,0.3);
+}
+
+.tool-generate-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --- 輸出預覽區 --- */
+.tool-output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.tool-output-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Tab 切換（帶看準備包用） */
+.tool-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+}
+
+.tool-tab {
+  flex: 1;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.tool-tab:hover {
+  color: var(--text);
+  background: rgba(255,255,255,0.05);
+}
+
+.tool-tab.active {
+  background: var(--primary);
+  color: var(--bg);
+}
+
+.tool-output-content {
+  flex: 1;
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: #E0E0E0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-y: auto;
+}
+
+/* 空狀態 */
+.tool-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.tool-empty-icon {
+  font-size: 56px;
+  margin-bottom: 16px;
+}
+
+.tool-empty h3 {
+  font-size: 18px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.tool-empty p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* 變數高亮 */
+.var-highlight {
+  background: rgba(0,212,255,0.18);
+  border-bottom: 2px solid var(--primary);
+  padding: 1px 3px;
+  border-radius: 3px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.var-unfilled {
+  background: rgba(255,107,53,0.12);
+  border-bottom: 2px dashed var(--accent);
+  padding: 1px 3px;
+  border-radius: 3px;
+  color: var(--accent);
+}
+
+/* 輸出底部動作 */
+.tool-output-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.tool-copy-btn {
+  padding: 10px 24px;
+  background: linear-gradient(135deg, var(--primary), #0099CC);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--bg);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tool-copy-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0,212,255,0.3);
+}
+
+.tool-copy-btn.copied {
+  background: linear-gradient(135deg, var(--green), #2AAE4A);
+}
+
+.tool-copy-all-btn {
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tool-copy-all-btn:hover {
+  background: rgba(255,255,255,0.1);
+  color: var(--text);
+}
+
+/* --- 返回連結 --- */
+.tool-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: 16px;
+  transition: color 0.2s;
+}
+
+.tool-back:hover {
+  color: var(--primary);
+}
+
+/* --- RWD 手機版 --- */
+@media (max-width: 768px) {
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tool-layout {
+    flex-direction: column;
+  }
+
+  .tool-sidebar {
+    position: relative;
+    top: 0;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    max-height: none;
+  }
+
+  .tool-main {
+    margin-left: 0;
+    padding: 16px;
+  }
+
+  .tool-output-content {
+    font-size: 12px;
+    padding: 16px;
+  }
+
+  .tool-output-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .tool-copy-btn,
+  .tool-copy-all-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .tool-tabs {
+    flex-wrap: wrap;
+  }
+}
+
+/* --- 隱藏 --- */
+.hidden {
+  display: none !important;
+}
